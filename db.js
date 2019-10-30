@@ -6,7 +6,7 @@ const options = {
   useUnifiedTopology: true
 };
 
-mongoose.connect('mongodb://dev:dev123456@ds339968.mlab.com:39968/treinamento-node-vanilla', options);
+mongoose.connect('mongodb://dev:dev123456@ds141188.mlab.com:41188/treinamento-node-vanilla', options);
 
 const db = mongoose.connection;
 

@@ -4,40 +4,54 @@ const Device = require('../models/device.model');
 
 const route = express.Router();
 
-route.get('/devices/:id', (req, res, next) => {
-  Device.getById(req.params.id)
-    .then((registro) => {
-      res.send(registro);
-    })
+route.get('/devices/:id', async (req, res, next) => {
+  try {
+    const device = await Device.getById(req.params.id);
+    if (device) {
+      res.send(device);
+    } else {
+      res.sendStatus(HttpStatusCodes.NOT_FOUND);
+    }
+  } catch (error) {
+    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+  }
 });
 
-route.get('/devices', (req, res, next) => {
-  Device.getAll()
-    .then((lista) => {
-      res.send(lista);
-    });
+route.get('/devices', async (req, res, next) => {
+  try {
+    const devices = await Device.getAll();
+    res.send(devices);
+  } catch (error) {
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send(error);
+  }
 });
 
-route.post('/devices', (req, res, next) => {
-  Device.create(req.body)
-    .then(() => {
-      res.sendStatus(HttpStatusCodes.CREATED);
-    });
+route.post('/devices', async (req, res, next) => {
+  try {
+    await Device.create(req.body);
+    res.sendStatus(HttpStatusCodes.CREATED);
+  } catch (error) {
+    res.status(HttpStatusCodes.BAD_REQUEST).send(error);
+  }
 });
 
-route.put('/devices/:id', (req, res, next) => {
-  req.body._id = req.params.id;
-  Device.update(req.body)
-    .then(() => {
-      res.sendStatus(HttpStatusCodes.OK);
-    });
+route.put('/devices/:id', async (req, res, next) => {
+  try {
+    req.body._id = req.params.id;
+    await Device.update(req.body);
+    res.sendStatus(HttpStatusCodes.OK);
+  } catch (error) {
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send(error);
+  }
 });
 
-route.delete('/devices/:id', (req, res, next) => {
-  Device.delete(req.params.id)
-    .then(() => {
-      res.sendStatus(HttpStatusCodes.OK);
-    });
+route.delete('/devices/:id', async (req, res, next) => {
+  try {
+    await Device.delete(req.params.id);
+    res.sendStatus(HttpStatusCodes.OK);
+  } catch (error) {
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send(error);
+  }
 });
 
 module.exports = route;

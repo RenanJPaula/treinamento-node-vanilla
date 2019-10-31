@@ -1,7 +1,6 @@
 const express = require('express');
 const HttpStatusCodes = require('http-status-codes');
 const Device = require('../models/device.model');
-
 const route = express.Router();
 
 route.get('/devices/:id', async (req, res, next) => {
@@ -29,7 +28,8 @@ route.get('/devices', async (req, res, next) => {
 route.post('/devices', async (req, res, next) => {
   try {
     await Device.create(req.body);
-    res.sendStatus(HttpStatusCodes.CREATED);
+    const responseBody = { message: 'Registro inserido com sucesso!' };
+    res.status(HttpStatusCodes.CREATED).send(responseBody);
   } catch (error) {
     res.status(HttpStatusCodes.BAD_REQUEST).send(error);
   }
@@ -39,7 +39,8 @@ route.put('/devices/:id', async (req, res, next) => {
   try {
     req.body._id = req.params.id;
     await Device.update(req.body);
-    res.sendStatus(HttpStatusCodes.OK);
+    const responseBody = { message: 'Registro atualizado com sucesso!' };
+    res.status(HttpStatusCodes.OK).send(responseBody);
   } catch (error) {
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send(error);
   }
@@ -48,7 +49,8 @@ route.put('/devices/:id', async (req, res, next) => {
 route.delete('/devices/:id', async (req, res, next) => {
   try {
     await Device.delete(req.params.id);
-    res.sendStatus(HttpStatusCodes.OK);
+    const responseBody = { message: 'Registro removido com sucesso!' };
+    res.status(HttpStatusCodes.OK).send(responseBody);
   } catch (error) {
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send(error);
   }

@@ -11,12 +11,12 @@ module.exports = async (req, res, next) => {
   const credentialsSplitedType = authorization.split(' ');
   const authorizationType = credentialsSplitedType.shift();
   const token = credentialsSplitedType.shift();
-  const credentials = Buffer.from(token, 'base64').toString().split(':');
 
   if (authorizationType !== 'Basic') {
     return res.sendStatus(HttpStatusCodes.UNAUTHORIZED);
   }
 
+  const credentials = Buffer.from(token, 'base64').toString().split(':');
   const user = await User.authenticate(credentials.shift(), credentials.shift());
 
   if (!user) {

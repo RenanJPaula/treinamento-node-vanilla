@@ -12,22 +12,25 @@ class Device {
     return DeviceModel.create(device);
   }
 
-  static getById(id) {
-    return DeviceModel.findOne({
-      _id: id
-    });
+  static getById(_id) {
+    return DeviceModel.findOne({ _id }).lean();
   }
 
   static update(device) {
     return DeviceModel.update({ _id: device._id }, device);
   }
 
-  static delete(id) {
-    return DeviceModel.deleteOne({ _id: id });
+  static delete(_id) {
+    return DeviceModel.deleteOne({ _id });
   }
 
   static getAll() {
-    return DeviceModel.find();
+    return DeviceModel.find().lean();
+  }
+
+  static getByIds(ids) {
+    const query = { _id: { $in: ids } };
+    return DeviceModel.find(query).lean();
   }
 
 }

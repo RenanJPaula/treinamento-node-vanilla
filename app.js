@@ -3,7 +3,9 @@ const bodyParser = require('body-parser');
 const authenticationMiddleware = require('./middlewares/authentication.middleware')
 const fs = require('fs');
 const app = express();
+
 require('./db');
+require('./swagger')(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

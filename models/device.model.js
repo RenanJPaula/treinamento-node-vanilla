@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-
-const deviceSchema = new mongoose.Schema({
-  name: { type: String, required: true }
-});
+const deviceSchema = require('../schemas/device.schema');
 
 const DeviceModel = mongoose.model('Device', deviceSchema, 'devices');
 

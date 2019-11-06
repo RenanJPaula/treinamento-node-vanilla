@@ -56,4 +56,18 @@ route.delete('/devices/:id', async (req, res, next) => {
   }
 });
 
+route.post('/devices/:id/action', async (req, res, next) => {
+  try {
+    const device = await Device.getById(req.params.id);
+    if (!device) {
+      res.sendStatus(HttpStatusCodes.NOT_FOUND);
+    } else {
+      mqttClient.send(device.deviceid, req.body.value);
+      res.status(HttpStatusCodes.OK).send();
+    }
+  } catch (error) {
+    res.status(HttpStatusCodes.BAD_REQUEST).send(error);
+  }
+});
+
 module.exports = route;

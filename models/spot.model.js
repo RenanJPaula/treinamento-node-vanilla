@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
-
-const spotSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  devices: [{ type: mongoose.Schema.ObjectId, ref: 'Device', default: [] }]
-});
+const spotSchema = require('../schemas/spot.schema');
 
 const SpotModel = mongoose.model('Spot', spotSchema, 'spots');
 

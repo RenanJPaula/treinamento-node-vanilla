@@ -2,6 +2,8 @@ const express = require('express');
 const HttpStatusCodes = require('http-status-codes');
 const Device = require('../models/device.model');
 const route = express.Router();
+const mqtt = require('../mqtt');
+const User = require('../models/user.model');
 
 route.get('/devices/:id', async (req, res, next) => {
   try {
@@ -58,13 +60,16 @@ route.delete('/devices/:id', async (req, res, next) => {
 
 route.post('/devices/:id/action', async (req, res, next) => {
   try {
-    const device = await Device.getById(req.params.id);
+    const deviceId = req.params.id;
+    const device = await User.getDeviceOfUser(req.user._id, deviceId);
+
     if (!device) {
       res.sendStatus(HttpStatusCodes.NOT_FOUND);
     } else {
-      mqttClient.send(device.deviceid, req.body.value);
+      mqtt.publish(device.deviceid, req.body.value);
       res.status(HttpStatusCodes.OK).send();
     }
+
   } catch (error) {
     res.status(HttpStatusCodes.BAD_REQUEST).send(error);
   }

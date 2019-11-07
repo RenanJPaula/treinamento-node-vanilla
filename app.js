@@ -16,7 +16,7 @@ app.use(authenticationMiddleware);
 // Rotas Privadas
 fs.readdirSync('./routes').forEach(file => {
   app.use(require(`./routes/${file}`));
-})
+});
 
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
